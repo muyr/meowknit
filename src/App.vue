@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { Analytics } from '@vercel/analytics/vue'
 import CategoryFilter from './components/CategoryFilter.vue'
 import HeroSection from './components/HeroSection.vue'
 import SiteFooter from './components/SiteFooter.vue'
@@ -31,6 +32,7 @@ function getCategoryLabel(categoryId: WorkCategoryId) {
 
 <template>
   <div class="site-shell">
+    <Analytics />
     <main>
       <HeroSection />
 
