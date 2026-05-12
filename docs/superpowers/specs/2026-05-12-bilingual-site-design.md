@@ -1,8 +1,8 @@
-# Meowknit 双语网站设计
+# MeowKnit 双语网站设计
 
 ## 背景
 
-Meowknit 需要在现有静态作品集 MVP 上支持简体中文和英语。当前产品内容已经集中到 `src/content/`，图片放在 `public/images/products/`，适合在不引入后台的前提下做轻量多语言。
+MeowKnit 需要在现有静态作品集 MVP 上支持简体中文和英语。当前产品内容已经集中到 `src/content/`，图片放在 `public/images/products/`，适合在不引入后台的前提下做轻量多语言。
 
 本设计只覆盖公开网站的双语展示，不引入 CMS、自研后台或复杂翻译工作流。
 

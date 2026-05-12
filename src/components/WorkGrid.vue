@@ -5,7 +5,6 @@ import WorkCard from './WorkCard.vue'
 
 defineProps<{
   works: Work[]
-  getCategoryLabel: (categoryId: Work['category']) => string
   copy: UiCopy
 }>()
 
@@ -26,7 +25,8 @@ defineEmits<{
         v-for="work in works"
         :key="work.slug"
         :work="work"
-        :category-label="getCategoryLabel(work.category)"
+        :usage-category-label="work.usageCategory.label"
+        :craft-category-label="work.craftCategory.label"
         :featured-label="copy.featuredLabel"
         @open="$emit('open', $event)"
       />

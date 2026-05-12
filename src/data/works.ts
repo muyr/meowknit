@@ -1,1 +1,10 @@
-export { categories, getWorkCta, products, works } from '../content/catalog'
+export {
+  categories,
+  craftCategories,
+  getCraftCategories,
+  getUsageCategories,
+  getWorkCta,
+  products,
+  usageCategories,
+  works,
+} from '../content/catalog'

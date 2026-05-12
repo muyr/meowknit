@@ -1,12 +1,12 @@
 import type { Locale } from '../i18n/locales'
 
 export type WorkCategoryId =
-  | 'knitwear'
-  | 'crochet-bag'
-  | 'home-decor'
-  | 'pet-accessory'
-  | 'miniature'
-  | 'seasonal-gift'
+  | UsageCategoryId
+  | CraftCategoryId
+
+export type UsageCategoryId = 'home' | 'jewelry' | 'pet-goods' | 'bags' | 'gifts'
+
+export type CraftCategoryId = 'tatting' | 'crochet' | 'macrame' | 'knitting'
 
 export type LocalizedText = Record<Locale, string>
 
@@ -22,6 +22,22 @@ export interface WorkCategory {
   description: string
 }
 
+export interface RawUsageCategory extends RawWorkCategory {
+  id: UsageCategoryId
+}
+
+export interface UsageCategory extends WorkCategory {
+  id: UsageCategoryId
+}
+
+export interface RawCraftCategory extends RawWorkCategory {
+  id: CraftCategoryId
+}
+
+export interface CraftCategory extends WorkCategory {
+  id: CraftCategoryId
+}
+
 export interface RawWorkImage {
   src?: string
   alt: LocalizedText
@@ -34,12 +50,27 @@ export interface WorkImage {
   gradient: string
 }
 
+export interface RawWorkVariant {
+  id: string
+  label: LocalizedText
+  imageIndex: number
+}
+
+export interface WorkVariant {
+  id: string
+  label: string
+  imageIndex: number
+}
+
 export interface RawWork {
   slug: string
   name: LocalizedText
-  category: WorkCategoryId
+  usageCategory: UsageCategoryId
+  craftCategory: CraftCategoryId
   description: LocalizedText
   images: RawWorkImage[]
+  youtubeVideoId?: string
+  variants?: RawWorkVariant[]
   featured: boolean
   etsyUrl?: string
   inquiryUrl?: string
@@ -49,9 +80,12 @@ export interface RawWork {
 export interface Work {
   slug: string
   name: string
-  category: WorkCategoryId
+  usageCategory: UsageCategory
+  craftCategory: CraftCategory
   description: string
   images: WorkImage[]
+  youtubeVideoId?: string
+  variants?: WorkVariant[]
   featured: boolean
   etsyUrl?: string
   inquiryUrl?: string

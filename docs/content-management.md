@@ -12,8 +12,9 @@ src/
   content/
     README.md
     catalog.ts
-    categories.ts
+    craftCategories.ts
     products.ts
+    usageCategories.ts
   types/
     work.ts
 public/
@@ -29,14 +30,15 @@ public/
 1. 将产品图片放入 `public/images/products/`。
 2. 打开 `src/content/products.ts`。
 3. 在 `products` 数组里复制一个已有产品对象。
-4. 修改 `slug`、`name`、`category`、`description`、`images`、`featured` 和链接字段。
+4. 修改 `slug`、`name`、`usageCategory`、`craftCategory`、`description`、`images`、`featured` 和链接字段。
 5. 运行 `npm run test -- --run` 和 `npm run build`。
 
 ## 产品字段说明
 
 - `slug`：产品唯一标识，用英文小写和连字符，例如 `momo-cardigan`。
 - `name`：页面展示的产品名，需要同时维护 `zh-CN` 和 `en`。
-- `category`：分类 id，必须来自 `src/content/categories.ts`。
+- `usageCategory`：用途分类 id，必须来自 `src/content/usageCategories.ts`。
+- `craftCategory`：工艺分类 id，必须来自 `src/content/craftCategories.ts`。
 - `description`：简短产品介绍，需要同时维护 `zh-CN` 和 `en`。
 - `images`：产品图片列表。
 - `featured`：是否标记为精选。
@@ -65,10 +67,15 @@ images: [
 
 ## 分类维护
 
-分类在 `src/content/categories.ts` 中维护。分类的 `label` 和 `description` 也需要同时维护 `zh-CN` 和 `en`。MVP 建议保持 5-6 个主分类，避免分类过细导致每类作品太少。
+分类分成两个文件维护：
+
+- `src/content/usageCategories.ts`：用途分类，例如家居、首饰、宠物用品、包袋、礼物。
+- `src/content/craftCategories.ts`：工艺分类，例如梭编、钩针、绳编、针织。
+
+分类的 `label` 和 `description` 也需要同时维护 `zh-CN` 和 `en`。
 
 如果新增分类，需要同时：
 
-1. 在 `src/types/work.ts` 的 `WorkCategoryId` 中添加新的分类 id。
-2. 在 `src/content/categories.ts` 添加分类名称和描述。
+1. 在 `src/types/work.ts` 的 `UsageCategoryId` 或 `CraftCategoryId` 中添加新的分类 id。
+2. 在对应的 `usageCategories.ts` 或 `craftCategories.ts` 添加分类名称和描述。
 3. 在 `src/content/products.ts` 的产品中使用新分类。

@@ -21,11 +21,11 @@ defineEmits<{
     <a
       class="header-brand"
       :href="navPaths.home"
-      aria-label="Meowknit home"
+      aria-label="MeowKnit home"
       @click.prevent="$emit('navigate', 'home')"
     >
       <img :src="brandLogoUrl" :alt="copy.heroLogoAlt" />
-      <span>Meowknit</span>
+      <span>MeowKnit</span>
     </a>
 
     <nav class="site-nav" aria-label="Main navigation">
@@ -45,14 +45,7 @@ defineEmits<{
       >
         {{ copy.navWorks }}
       </a>
-      <a
-        :href="navPaths.about"
-        :aria-current="currentPage === 'about' ? 'page' : undefined"
-        data-test="nav-about"
-        @click.prevent="$emit('navigate', 'about')"
-      >
-        {{ copy.navAbout }}
-      </a>
+
       <a :href="copy.etsyShopUrl" target="_blank" rel="noreferrer" data-test="nav-etsy">
         {{ copy.navEtsy }}
       </a>
@@ -63,6 +56,14 @@ defineEmits<{
         @click.prevent="$emit('navigate', 'market')"
       >
         {{ copy.navMarket }}
+      </a>
+      <a
+        :href="navPaths.about"
+        :aria-current="currentPage === 'about' ? 'page' : undefined"
+        data-test="nav-about"
+        @click.prevent="$emit('navigate', 'about')"
+      >
+        {{ copy.navAbout }}
       </a>
     </nav>
 

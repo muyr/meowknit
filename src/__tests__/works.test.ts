@@ -2,10 +2,19 @@ import { describe, expect, it } from 'vitest'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { DEFAULT_LOCALE, locales } from '../i18n/locales'
-import { getCategories, getWorkCta, getWorks, products, rawCategories } from '../content/catalog'
+import {
+  getCraftCategories,
+  getUsageCategories,
+  getWorkCta,
+  getWorks,
+  products,
+  rawCraftCategories,
+  rawUsageCategories,
+} from '../content/catalog'
 
 const works = getWorks(DEFAULT_LOCALE)
-const categories = getCategories(DEFAULT_LOCALE)
+const usageCategories = getUsageCategories(DEFAULT_LOCALE)
+const craftCategories = getCraftCategories(DEFAULT_LOCALE)
 
 describe('works data', () => {
   it('provides at least five portfolio works with unique slugs', () => {
@@ -16,12 +25,23 @@ describe('works data', () => {
     expect(new Set(slugs).size).toBe(slugs.length)
   })
 
-  it('keeps the MVP category set between five and six categories', () => {
-    expect(categories.length).toBeGreaterThanOrEqual(5)
-    expect(categories.length).toBeLessThanOrEqual(6)
+  it('keeps separate usage and craft category sets', () => {
+    expect(usageCategories.map((category) => category.id)).toEqual([
+      'home',
+      'jewelry',
+      'pet-goods',
+      'bags',
+      'gifts',
+    ])
+    expect(craftCategories.map((category) => category.id)).toEqual([
+      'tatting',
+      'crochet',
+      'macrame',
+      'knitting',
+    ])
   })
 
-  it('supports Simplified Chinese and English content for every product and category', () => {
+  it('supports Simplified Chinese and English content for every product and category type', () => {
     expect(locales).toEqual(['zh-CN', 'en'])
 
     for (const product of products) {
@@ -32,10 +52,14 @@ describe('works data', () => {
         for (const image of product.images) {
           expect(image.alt[locale].trim()).not.toHaveLength(0)
         }
+
+        for (const variant of product.variants ?? []) {
+          expect(variant.label[locale].trim()).not.toHaveLength(0)
+        }
       }
     }
 
-    for (const category of rawCategories) {
+    for (const category of [...rawUsageCategories, ...rawCraftCategories]) {
       for (const locale of locales) {
         expect(category.label[locale].trim()).not.toHaveLength(0)
         expect(category.description[locale].trim()).not.toHaveLength(0)
@@ -43,11 +67,13 @@ describe('works data', () => {
     }
   })
 
-  it('uses only declared categories', () => {
-    const categoryIds = new Set(categories.map((category) => category.id))
+  it('uses only declared usage and craft categories', () => {
+    const usageCategoryIds = new Set(usageCategories.map((category) => category.id))
+    const craftCategoryIds = new Set(craftCategories.map((category) => category.id))
 
     for (const work of works) {
-      expect(categoryIds.has(work.category)).toBe(true)
+      expect(usageCategoryIds.has(work.usageCategory.id)).toBe(true)
+      expect(craftCategoryIds.has(work.craftCategory.id)).toBe(true)
     }
   })
 
@@ -55,11 +81,29 @@ describe('works data', () => {
     for (const work of works) {
       expect(work.name.trim()).not.toHaveLength(0)
       expect(work.description.trim()).not.toHaveLength(0)
+      expect(work.usageCategory.label.trim()).not.toHaveLength(0)
+      expect(work.craftCategory.label.trim()).not.toHaveLength(0)
       expect(work.images.length).toBeGreaterThanOrEqual(1)
 
       for (const image of work.images) {
         expect(image.alt.trim()).not.toHaveLength(0)
         expect(Boolean(image.src?.trim() || image.gradient.trim())).toBe(true)
+      }
+    }
+  })
+
+  it('supports optional detail videos and variants that point to existing images', () => {
+    const richWork = works.find((work) => work.youtubeVideoId && work.variants?.length)
+
+    expect(richWork).toBeDefined()
+
+    for (const work of works) {
+      expect(work.youtubeVideoId ?? '').not.toContain('youtube.com')
+
+      for (const variant of work.variants ?? []) {
+        expect(variant.label.trim()).not.toHaveLength(0)
+        expect(variant.imageIndex).toBeGreaterThanOrEqual(0)
+        expect(variant.imageIndex).toBeLessThan(work.images.length)
       }
     }
   })

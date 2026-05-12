@@ -8,19 +8,35 @@ import SiteHeader from './components/SiteHeader.vue'
 import SiteFooter from './components/SiteFooter.vue'
 import WorkDetail from './components/WorkDetail.vue'
 import WorkGrid from './components/WorkGrid.vue'
-import { getCategories, getWorkCta, getWorks } from './content/catalog'
+import { getCraftCategories, getUsageCategories, getWorkCta, getWorks } from './content/catalog'
 import { uiCopy, type Locale } from './i18n/locales'
-import { getLocaleFromPath, getLocalePath, getPageFromPath, type PageId } from './i18n/routing'
-import type { Work, WorkCategoryId } from './types/work'
+import {
+  getLocaleFromPath,
+  getLocalePath,
+  getPageFromPath,
+  getWorkSlugFromPath,
+  type PageId,
+} from './i18n/routing'
+import type { CraftCategoryId, UsageCategoryId, Work, WorkCategoryId } from './types/work'
 
 const currentLocale = ref<Locale>(getLocaleFromPath(window.location.pathname))
 const currentPage = ref<PageId>(getPageFromPath(window.location.pathname))
-const activeCategory = ref<WorkCategoryId | 'all'>('all')
-const selectedWork = ref<Work | null>(null)
+const currentWorkSlug = ref<string | null>(getWorkSlugFromPath(window.location.pathname))
+const activeUsageCategory = ref<UsageCategoryId | 'all'>('all')
+const activeCraftCategory = ref<CraftCategoryId | 'all'>('all')
 
 const copy = computed(() => uiCopy[currentLocale.value])
-const categories = computed(() => getCategories(currentLocale.value))
+const usageCategories = computed(() => getUsageCategories(currentLocale.value))
+const craftCategories = computed(() => getCraftCategories(currentLocale.value))
 const works = computed(() => getWorks(currentLocale.value))
+const featuredWorks = computed(() => works.value.filter((work) => work.featured))
+const selectedWork = computed(() => {
+  if (!currentWorkSlug.value) {
+    return null
+  }
+
+  return works.value.find((work) => work.slug === currentWorkSlug.value) ?? null
+})
 const navPaths = computed<Record<PageId, string>>(() => ({
   home: getLocalePath(currentLocale.value, 'home'),
   about: getLocalePath(currentLocale.value, 'about'),
@@ -29,33 +45,50 @@ const navPaths = computed<Record<PageId, string>>(() => ({
 }))
 
 const filteredWorks = computed(() => {
-  if (activeCategory.value === 'all') {
-    return works.value
-  }
+  return works.value.filter((work) => {
+    const matchesUsage =
+      activeUsageCategory.value === 'all' || work.usageCategory.id === activeUsageCategory.value
+    const matchesCraft =
+      activeCraftCategory.value === 'all' || work.craftCategory.id === activeCraftCategory.value
 
-  return works.value.filter((work) => work.category === activeCategory.value)
+    return matchesUsage && matchesCraft
+  })
 })
 
-function selectCategory(category: WorkCategoryId | 'all') {
-  activeCategory.value = category
-  selectedWork.value = null
+function selectUsageCategory(category: WorkCategoryId | 'all') {
+  activeUsageCategory.value = category as UsageCategoryId | 'all'
+  currentWorkSlug.value = null
 }
 
-function getCategoryLabel(categoryId: WorkCategoryId) {
-  return (
-    categories.value.find((category) => category.id === categoryId)?.label ?? copy.value.categoryFallback
-  )
+function selectCraftCategory(category: WorkCategoryId | 'all') {
+  activeCraftCategory.value = category as CraftCategoryId | 'all'
+  currentWorkSlug.value = null
+}
+
+function openWork(work: Work) {
+  currentPage.value = 'works'
+  currentWorkSlug.value = work.slug
+  window.history.pushState({}, '', getLocalePath(currentLocale.value, 'works', work.slug))
+}
+
+function closeWorkDetail() {
+  currentPage.value = 'works'
+  currentWorkSlug.value = null
+  window.history.pushState({}, '', getLocalePath(currentLocale.value, 'works'))
 }
 
 function switchLocale(locale: Locale) {
   currentLocale.value = locale
-  selectedWork.value = null
-  window.history.pushState({}, '', getLocalePath(locale, currentPage.value))
+  window.history.pushState(
+    {},
+    '',
+    getLocalePath(locale, currentPage.value, currentWorkSlug.value ?? undefined),
+  )
 }
 
 function navigateTo(page: PageId) {
   currentPage.value = page
-  selectedWork.value = null
+  currentWorkSlug.value = null
   window.history.pushState({}, '', getLocalePath(currentLocale.value, page))
 }
 </script>
@@ -72,37 +105,60 @@ function navigateTo(page: PageId) {
     />
 
     <main>
-      <HeroSection v-if="currentPage === 'home'" :copy="copy" />
+      <template v-if="currentPage === 'home'">
+        <HeroSection :copy="copy" />
+
+        <WorkGrid
+          :works="featuredWorks"
+          :copy="copy"
+          @open="openWork"
+        />
+      </template>
 
       <AboutSection v-if="currentPage === 'about'" :copy="copy" />
 
       <MarketSection v-if="currentPage === 'market'" :copy="copy" />
 
-      <template v-if="currentPage === 'works'">
-        <CategoryFilter
-          :categories="categories"
-          :active-category="activeCategory"
-          :all-label="copy.allWorks"
-          :nav-label="copy.categoryNavLabel"
-          @select="selectCategory"
-        />
+      <template v-if="currentPage === 'works' && !selectedWork">
+        <div class="category-filter-panel">
+          <CategoryFilter
+            :categories="usageCategories"
+            :active-category="activeUsageCategory"
+            :title="copy.usageCategoryTitle"
+            :all-label="copy.allWorks"
+            :nav-label="copy.usageCategoryNavLabel"
+            test-id-prefix="usage"
+            @select="selectUsageCategory"
+          />
+
+          <CategoryFilter
+            :categories="craftCategories"
+            :active-category="activeCraftCategory"
+            :title="copy.craftCategoryTitle"
+            :all-label="copy.allWorks"
+            :nav-label="copy.craftCategoryNavLabel"
+            test-id-prefix="craft"
+            @select="selectCraftCategory"
+          />
+        </div>
 
         <WorkGrid
           :works="filteredWorks"
-          :get-category-label="getCategoryLabel"
           :copy="copy"
-          @open="selectedWork = $event"
+          @open="openWork"
         />
 
-        <WorkDetail
-          v-if="selectedWork"
-          :work="selectedWork"
-          :category-label="getCategoryLabel(selectedWork.category)"
-          :cta="getWorkCta(selectedWork, currentLocale)"
-          :copy="copy"
-          @close="selectedWork = null"
-        />
       </template>
+
+      <WorkDetail
+        v-if="selectedWork"
+        :work="selectedWork"
+        :usage-category-label="selectedWork.usageCategory.label"
+        :craft-category-label="selectedWork.craftCategory.label"
+        :cta="getWorkCta(selectedWork, currentLocale)"
+        :copy="copy"
+        @close="closeWorkDetail"
+      />
     </main>
 
     <SiteFooter :copy="copy" />

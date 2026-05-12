@@ -3,11 +3,15 @@ import { describe, expect, it } from 'vitest'
 import App from '../App.vue'
 import WorkCard from '../components/WorkCard.vue'
 import WorkDetail from '../components/WorkDetail.vue'
-import { getWorkCta, getWorks } from '../content/catalog'
+import { getCraftCategories, getUsageCategories, getWorkCta, getWorks } from '../content/catalog'
 import { DEFAULT_LOCALE, uiCopy } from '../i18n/locales'
 import type { Work } from '../types/work'
 
 const works = getWorks(DEFAULT_LOCALE)
+const usageCategories = getUsageCategories(DEFAULT_LOCALE)
+const craftCategories = getCraftCategories(DEFAULT_LOCALE)
+const homeCategory = usageCategories.find((category) => category.id === 'home')!
+const knittingCategory = craftCategories.find((category) => category.id === 'knitting')!
 
 describe('App', () => {
   beforeEach(() => {
@@ -25,12 +29,31 @@ describe('App', () => {
     expect(wrapper.get('[data-test="nav-market"]').attributes('href')).toBe('/zh-CN/market')
     expect(
       wrapper.findAll('.site-nav a').map((link) => link.attributes('data-test')),
-    ).toEqual(['nav-home', 'nav-works', 'nav-about', 'nav-etsy', 'nav-market'])
-    expect(wrapper.text()).toContain('Meowknit')
+    ).toEqual(['nav-home', 'nav-works', 'nav-etsy', 'nav-market', 'nav-about'])
+    expect(wrapper.text()).toContain('MeowKnit')
     expect(wrapper.text()).not.toContain('关于一织猫')
-    expect(wrapper.text()).not.toContain('精选作品')
-    expect(wrapper.get('[data-test="brand-logo"]').attributes('alt')).toBe('Meowknit 一织猫品牌 logo')
+    expect(wrapper.text()).toContain('精选作品')
+    expect(wrapper.get('[data-test="brand-logo"]').attributes('alt')).toBe('MeowKnit 一织猫品牌 logo')
     expect(wrapper.get('[data-test="locale-switch-zh-CN"]').attributes('aria-pressed')).toBe('true')
+  })
+
+  it('shows featured works on the home page and opens their detail', async () => {
+    const wrapper = mount(App)
+    const featuredWorks = works.filter((work) => work.featured)
+
+    for (const work of featuredWorks) {
+      expect(wrapper.text()).toContain(work.name)
+    }
+
+    expect(wrapper.text()).not.toContain('猫云朵小领巾')
+
+    await wrapper.get('[data-test="work-card-momo-cardigan"]').trigger('click')
+
+    expect(window.location.pathname).toBe('/zh-CN/works/momo-cardigan')
+
+    const detail = wrapper.get('[data-test="work-detail"]')
+    expect(detail.text()).toContain('Momo 奶油短开衫')
+    expect(detail.text()).toContain('奶油白与蜜桃粉交织')
   })
 
   it('renders About as a separate localized page', async () => {
@@ -74,7 +97,7 @@ describe('App', () => {
     const wrapper = mount(App)
 
     expect(wrapper.text()).toContain('Handmade portfolio')
-    expect(wrapper.text()).not.toContain('Momo Cream Cropped Cardigan')
+    expect(wrapper.text()).toContain('Momo Cream Cropped Cardigan')
     expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
   })
 
@@ -82,7 +105,9 @@ describe('App', () => {
     window.history.pushState({}, '', '/en/works')
     const wrapper = mount(App)
 
-    expect(wrapper.text()).toContain('Knitwear')
+    expect(wrapper.text()).toContain('Usage')
+    expect(wrapper.text()).toContain('Craft')
+    expect(wrapper.text()).toContain('Knitting')
     expect(wrapper.text()).toContain('Momo Cream Cropped Cardigan')
     expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
   })
@@ -105,17 +130,33 @@ describe('App', () => {
     expect(window.location.pathname).toBe('/zh-CN/works')
   })
 
-  it('shows all works by default and filters by category after clicking a category', async () => {
+  it('shows all works by default and filters by usage and craft categories', async () => {
     window.history.pushState({}, '', '/zh-CN/works')
     const wrapper = mount(App)
+
+    expect(wrapper.text()).toContain('用途')
+    expect(wrapper.text()).toContain('工艺')
 
     for (const work of works) {
       expect(wrapper.text()).toContain(work.name)
     }
 
-    await wrapper.get('[data-test="category-filter-pet-accessory"]').trigger('click')
+    await wrapper.get('[data-test="usage-category-filter-pet-goods"]').trigger('click')
 
     expect(wrapper.text()).toContain('猫云朵小领巾')
+    expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
+
+    await wrapper.get('[data-test="usage-category-filter-all"]').trigger('click')
+    await wrapper.get('[data-test="craft-category-filter-knitting"]').trigger('click')
+
+    expect(wrapper.text()).toContain('Momo 奶油短开衫')
+    expect(wrapper.text()).not.toContain('姜糖 Market Bag')
+
+    await wrapper.get('[data-test="craft-category-filter-all"]').trigger('click')
+    await wrapper.get('[data-test="craft-category-filter-crochet"]').trigger('click')
+    await wrapper.get('[data-test="usage-category-filter-gifts"]').trigger('click')
+
+    expect(wrapper.text()).toContain('拿铁色迷你兔')
     expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
   })
 
@@ -125,10 +166,74 @@ describe('App', () => {
 
     await wrapper.get('[data-test="work-card-momo-cardigan"]').trigger('click')
 
+    expect(window.location.pathname).toBe('/zh-CN/works/momo-cardigan')
+
     const detail = wrapper.get('[data-test="work-detail"]')
 
     expect(detail.text()).toContain('Momo 奶油短开衫')
     expect(detail.text()).toContain('奶油白与蜜桃粉交织')
+  })
+
+  it('renders a work detail page from a direct localized URL', () => {
+    window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
+    const wrapper = mount(App)
+
+    expect(wrapper.text()).toContain('Momo 奶油短开衫')
+    expect(wrapper.text()).toContain('奶油白与蜜桃粉交织')
+    expect(wrapper.find('[data-test="work-detail"]').exists()).toBe(true)
+    expect(wrapper.find('[data-test="work-detail-main-row"]').exists()).toBe(true)
+    expect(wrapper.get('[data-test="work-detail-main-row"]').find('[data-test="work-video"]').exists()).toBe(
+      false,
+    )
+    expect(wrapper.get('[data-test="work-video"]').attributes('src')).toContain(
+      'https://www.youtube.com/embed/',
+    )
+    expect(wrapper.findAll('[data-test="work-detail-thumbnail"]')).toHaveLength(2)
+    expect(wrapper.find('[data-test="work-card-ginger-market-bag"]').exists()).toBe(false)
+  })
+
+  it('switches the detail image when a thumbnail or variant is selected', async () => {
+    window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
+    const wrapper = mount(App)
+
+    expect(wrapper.get('[data-test="work-detail-active-image"]').attributes('aria-label')).toBe(
+      '奶油白短款针织开衫正面',
+    )
+
+    await wrapper.findAll('[data-test="work-detail-thumbnail"]')[1].trigger('click')
+
+    expect(wrapper.get('[data-test="work-detail-active-image"]').attributes('aria-label')).toBe(
+      '蜜桃粉短款针织开衫细节',
+    )
+
+    await wrapper.get('[data-test="work-variant-cream"]').trigger('click')
+
+    expect(wrapper.get('[data-test="work-detail-active-image"]').attributes('aria-label')).toBe(
+      '奶油白短款针织开衫正面',
+    )
+    expect(wrapper.get('[data-test="work-variant-cream"]').attributes('aria-pressed')).toBe('true')
+  })
+
+  it('preserves the work detail page when switching languages', async () => {
+    window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
+    const wrapper = mount(App)
+
+    await wrapper.get('[data-test="locale-switch-en"]').trigger('click')
+
+    expect(window.location.pathname).toBe('/en/works/momo-cardigan')
+    expect(wrapper.text()).toContain('Momo Cream Cropped Cardigan')
+    expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
+  })
+
+  it('returns from a detail page to the localized works list', async () => {
+    window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
+    const wrapper = mount(App)
+
+    await wrapper.get('.detail-close').trigger('click')
+
+    expect(window.location.pathname).toBe('/zh-CN/works')
+    expect(wrapper.find('[data-test="work-detail"]').exists()).toBe(false)
+    expect(wrapper.find('[data-test="work-card-momo-cardigan"]').exists()).toBe(true)
   })
 
   it('shows an Etsy CTA for listed works and an inquiry CTA for unlisted works', async () => {
@@ -139,6 +244,7 @@ describe('App', () => {
     const etsyHref = wrapper.get('[data-test="work-cta"]').attributes('href')
     expect(wrapper.get('[data-test="work-cta"]').text()).toContain('在 Etsy 查看')
 
+    await wrapper.get('.detail-close').trigger('click')
     await wrapper.get('[data-test="work-card-window-sun-coaster-set"]').trigger('click')
     expect(wrapper.get('[data-test="work-cta"]').text()).toContain('咨询定制')
 
@@ -150,11 +256,12 @@ describe('App', () => {
     expect(englishWrapper.get('[data-test="work-cta"]').attributes('href')).toBe(etsyHref)
   })
 
-  it('renders every image for the selected work detail', () => {
+  it('renders thumbnails for every image in the selected work detail', () => {
     const workWithMultipleImages: Work = {
       slug: 'multi-image-sample',
       name: '多图样品',
-      category: 'home-decor',
+      usageCategory: homeCategory,
+      craftCategory: knittingCategory,
       description: '用于确认详情页会展示全部图片。',
       images: [
         {
@@ -174,12 +281,13 @@ describe('App', () => {
       props: {
         work: workWithMultipleImages,
         cta: getWorkCta(workWithMultipleImages),
-        categoryLabel: '家居织物',
+        usageCategoryLabel: '家居',
+        craftCategoryLabel: '针织',
         copy: uiCopy['zh-CN'],
       },
     })
 
-    expect(wrapper.findAll('[data-test="work-detail-image"]')).toHaveLength(
+    expect(wrapper.findAll('[data-test="work-detail-thumbnail"]')).toHaveLength(
       workWithMultipleImages.images.length,
     )
   })
@@ -188,7 +296,8 @@ describe('App', () => {
     const workWithRealImage: Work = {
       slug: 'real-image-sample',
       name: '真实图片样品',
-      category: 'home-decor',
+      usageCategory: homeCategory,
+      craftCategory: knittingCategory,
       description: '用于确认真实图片会优先渲染。',
       images: [
         {
@@ -204,7 +313,8 @@ describe('App', () => {
     const card = mount(WorkCard, {
       props: {
         work: workWithRealImage,
-        categoryLabel: '家居织物',
+        usageCategoryLabel: '家居',
+        craftCategoryLabel: '针织',
         featuredLabel: '精选',
       },
     })
@@ -212,7 +322,8 @@ describe('App', () => {
       props: {
         work: workWithRealImage,
         cta: getWorkCta(workWithRealImage),
-        categoryLabel: '家居织物',
+        usageCategoryLabel: '家居',
+        craftCategoryLabel: '针织',
         copy: uiCopy['zh-CN'],
       },
     })

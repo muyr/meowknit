@@ -1,4 +1,4 @@
-# Meowknit MVP 静态作品集实施计划
+# MeowKnit MVP 静态作品集实施计划
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -146,7 +146,7 @@ Expected: shows intended new project files.
 
 Run: `git add .`
 
-Run: `git commit -m "Initialize Meowknit static gallery MVP"`
+Run: `git commit -m "Initialize MeowKnit static gallery MVP"`
 
 Run: `git push -u origin main`
 
