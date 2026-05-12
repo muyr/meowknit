@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import AboutSection from './components/AboutSection.vue'
 import CategoryFilter from './components/CategoryFilter.vue'
 import HeroSection from './components/HeroSection.vue'
@@ -37,12 +37,23 @@ const selectedWork = computed(() => {
 
   return works.value.find((work) => work.slug === currentWorkSlug.value) ?? null
 })
+const documentTitle = computed(() => {
+  if (selectedWork.value) {
+    return `${selectedWork.value.name} | MeowKnit`
+  }
+
+  return copy.value.siteTitle
+})
 const navPaths = computed<Record<PageId, string>>(() => ({
   home: getLocalePath(currentLocale.value, 'home'),
   about: getLocalePath(currentLocale.value, 'about'),
   works: getLocalePath(currentLocale.value, 'works'),
   market: getLocalePath(currentLocale.value, 'market'),
 }))
+
+watchEffect(() => {
+  document.title = documentTitle.value
+})
 
 const filteredWorks = computed(() => {
   return works.value.filter((work) => {

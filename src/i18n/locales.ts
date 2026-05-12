@@ -8,6 +8,7 @@ export const uiCopy = {
   'zh-CN': {
     languageName: '简体中文',
     switchTo: 'English',
+    siteTitle: 'MeowKnit | 手工作品集',
     navHome: '首页',
     navAbout: '关于',
     navWorks: '作品集',
@@ -52,6 +53,7 @@ export const uiCopy = {
   en: {
     languageName: 'English',
     switchTo: '简体中文',
+    siteTitle: 'MeowKnit | Handmade Portfolio',
     navHome: 'Home',
     navAbout: 'About',
     navWorks: 'Works',

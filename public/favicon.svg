@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="MeowKnit">
+  <rect width="64" height="64" rx="16" fill="#fff8ef" />
+  <circle cx="32" cy="34" r="21" fill="#f1c9aa" />
+  <path d="M17 25 24 11l8 12 8-12 7 14" fill="#d79771" />
+  <path
+    d="M20 39c7 9 17 9 24 0M24 29h.01M40 29h.01"
+    fill="none"
+    stroke="#5f3728"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="4"
+  />
+  <path
+    d="M19 49c10-7 23-7 33 0"
+    fill="none"
+    stroke="#9a6140"
+    stroke-linecap="round"
+    stroke-width="3"
+  />
+</svg>

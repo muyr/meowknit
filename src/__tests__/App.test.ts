@@ -16,6 +16,7 @@ const knittingCategory = craftCategories.find((category) => category.id === 'kni
 describe('App', () => {
   beforeEach(() => {
     window.history.pushState({}, '', '/')
+    document.title = 'MeowKnit | Handmade Portfolio'
   })
 
   it('shows the header and home page by default', () => {
@@ -99,6 +100,18 @@ describe('App', () => {
     expect(wrapper.text()).toContain('Handmade portfolio')
     expect(wrapper.text()).toContain('Momo Cream Cropped Cardigan')
     expect(wrapper.text()).not.toContain('Momo 奶油短开衫')
+    expect(document.title).toBe('MeowKnit | Handmade Portfolio')
+  })
+
+  it('updates the document title when switching languages', async () => {
+    window.history.pushState({}, '', '/zh-CN')
+    const wrapper = mount(App)
+
+    expect(document.title).toBe('MeowKnit | 手工作品集')
+
+    await wrapper.get('[data-test="locale-switch-en"]').trigger('click')
+
+    expect(document.title).toBe('MeowKnit | Handmade Portfolio')
   })
 
   it('renders English works from the /en/works path', () => {
