@@ -18,7 +18,8 @@
 - 创建 `tsconfig.json`、`tsconfig.node.json`：TypeScript 配置。
 - 创建 `src/main.ts`：挂载 Vue 应用。
 - 创建 `src/App.vue`：页面结构和交互状态。
-- 创建 `src/data/works.ts`：作品分类和示例作品数据。
+- 创建 `src/content/`：产品分类、产品数据和 catalog 入口。
+- 保留 `src/data/works.ts`：兼容旧导入的 re-export。
 - 创建 `src/types/work.ts`：作品数据类型。
 - 创建 `src/components/*.vue`：品牌头图、分类筛选、作品网格、作品卡片、作品详情、站点页脚。
 - 创建 `src/assets/styles.css`：全站样式。
@@ -60,7 +61,12 @@ Expected: build exits with code 0 and creates `dist/`.
 
 **Files:**
 - Create: `src/types/work.ts`
-- Create: `src/data/works.ts`
+- Create: `src/content/categories.ts`
+- Create: `src/content/products.ts`
+- Create: `src/content/catalog.ts`
+- Create: `src/content/README.md`
+- Create: `public/images/products/README.md`
+- Modify: `src/data/works.ts`
 - Create: `src/components/HeroSection.vue`
 - Create: `src/components/CategoryFilter.vue`
 - Create: `src/components/WorkGrid.vue`

@@ -4,6 +4,8 @@ import type { WorkCategory, WorkCategoryId } from '../types/work'
 defineProps<{
   categories: WorkCategory[]
   activeCategory: WorkCategoryId | 'all'
+  allLabel: string
+  navLabel: string
 }>()
 
 defineEmits<{
@@ -12,7 +14,7 @@ defineEmits<{
 </script>
 
 <template>
-  <nav class="category-filter" aria-label="作品分类">
+  <nav class="category-filter" :aria-label="navLabel">
     <button
       class="category-pill"
       :class="{ active: activeCategory === 'all' }"
@@ -20,7 +22,7 @@ defineEmits<{
       data-test="category-filter-all"
       @click="$emit('select', 'all')"
     >
-      全部作品
+      {{ allLabel }}
     </button>
 
     <button

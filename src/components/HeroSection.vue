@@ -1,21 +1,33 @@
+<script setup lang="ts">
+import brandLogoUrl from '../assets/brand-logo.png'
+import type { UiCopy } from '../i18n/locales'
+
+defineProps<{
+  copy: UiCopy
+}>()
+</script>
+
 <template>
-  <section class="hero-section" aria-labelledby="brand-title">
+  <section id="home" class="hero-section" aria-labelledby="brand-title">
     <div class="hero-copy">
-      <p class="eyebrow">Handmade portfolio</p>
-      <h1 id="brand-title">Meowknit</h1>
-      <p class="intro">
-        给毛线、布料和慢手作留一片安静的展示空间。这里收集 Meowknit 的针织、
-        钩针和季节礼物，也欢迎通过 Etsy 或 Instagram 继续了解。
-      </p>
+      <p class="eyebrow">{{ copy.heroEyebrow }}</p>
+      <h1 id="brand-title">{{ copy.heroTitle }}</h1>
+      <p class="intro">{{ copy.heroIntro }}</p>
     </div>
 
-    <div class="hero-visual" aria-label="品牌头图">
+    <div class="hero-visual" :aria-label="copy.heroVisualLabel">
       <div class="hero-visual-main">
-        <span>soft handmade textures</span>
+        <img
+          class="brand-logo"
+          :src="brandLogoUrl"
+          :alt="copy.heroLogoAlt"
+          data-test="brand-logo"
+        />
+        <span>{{ copy.heroTextureLabel }}</span>
       </div>
       <div class="hero-visual-note">
         <strong>6</strong>
-        <span>类手工作品雏形</span>
+        <span>{{ copy.heroCountLabel }}</span>
       </div>
     </div>
   </section>

@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { categories, getWorkCta, works } from '../data/works'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
+import { DEFAULT_LOCALE, locales } from '../i18n/locales'
+import { getCategories, getWorkCta, getWorks, products, rawCategories } from '../content/catalog'
+
+const works = getWorks(DEFAULT_LOCALE)
+const categories = getCategories(DEFAULT_LOCALE)
 
 describe('works data', () => {
   it('provides at least five portfolio works with unique slugs', () => {
@@ -13,6 +19,28 @@ describe('works data', () => {
   it('keeps the MVP category set between five and six categories', () => {
     expect(categories.length).toBeGreaterThanOrEqual(5)
     expect(categories.length).toBeLessThanOrEqual(6)
+  })
+
+  it('supports Simplified Chinese and English content for every product and category', () => {
+    expect(locales).toEqual(['zh-CN', 'en'])
+
+    for (const product of products) {
+      for (const locale of locales) {
+        expect(product.name[locale].trim()).not.toHaveLength(0)
+        expect(product.description[locale].trim()).not.toHaveLength(0)
+
+        for (const image of product.images) {
+          expect(image.alt[locale].trim()).not.toHaveLength(0)
+        }
+      }
+    }
+
+    for (const category of rawCategories) {
+      for (const locale of locales) {
+        expect(category.label[locale].trim()).not.toHaveLength(0)
+        expect(category.description[locale].trim()).not.toHaveLength(0)
+      }
+    }
   })
 
   it('uses only declared categories', () => {
@@ -57,5 +85,11 @@ describe('works data', () => {
     expect(['inquiry', 'social']).toContain(cta.type)
     expect(cta.label).not.toHaveLength(0)
     expect(cta.href).toMatch(/^https?:\/\//)
+  })
+
+  it('keeps a public product image folder for maintainers', () => {
+    const productImageReadme = resolve(process.cwd(), 'public/images/products/README.md')
+
+    expect(existsSync(productImageReadme)).toBe(true)
   })
 })

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { Work, WorkCta } from '../types/work'
+import type { UiCopy } from '../i18n/locales'
 
 defineProps<{
   work: Work
   cta: WorkCta
   categoryLabel: string
+  copy: UiCopy
 }>()
 
 defineEmits<{
@@ -14,11 +16,16 @@ defineEmits<{
 
 <template>
   <aside class="work-detail" data-test="work-detail" aria-labelledby="work-detail-title">
-    <button class="detail-close" type="button" aria-label="关闭作品详情" @click="$emit('close')">
-      关闭
+    <button
+      class="detail-close"
+      type="button"
+      :aria-label="copy.detailClose"
+      @click="$emit('close')"
+    >
+      {{ copy.detailClose }}
     </button>
 
-    <div class="detail-gallery" aria-label="作品图片">
+    <div class="detail-gallery" :aria-label="copy.detailImageLabel">
       <template v-for="(image, index) in work.images" :key="`${work.slug}-${index}-${image.alt}`">
         <img
           v-if="image.src"

@@ -34,18 +34,22 @@ npm run build
 
 ## 内容维护
 
-作品数据维护在 `src/data/works.ts`：
+产品内容主要维护在 `src/content/`：
 
-- `categories` 定义作品分类。
-- `works` 定义作品列表、分类、描述、精选状态和 CTA 链接。
-- `getWorkCta()` 根据作品是否有 Etsy、咨询或社交链接生成展示按钮。
+- `src/content/products.ts` 定义产品列表、双语描述、精选状态、图片和 CTA 链接。
+- `src/content/categories.ts` 定义双语产品分类。
+- `src/content/catalog.ts` 根据当前语言组合产品和分类，并根据 Etsy、咨询或社交链接生成展示按钮。
 
 作品类型维护在 `src/types/work.ts`：
 
 - `WorkCategoryId` 定义可用分类 ID。
 - `WorkCategory`、`WorkImage`、`Work` 和 `WorkCta` 定义作品集数据结构。
 
-图片字段通过 `images` 数组维护。每张图片至少需要 `alt` 和 `gradient`；`gradient` 作为当前 MVP 的占位图背景。后续接入真实图片时，可以在图片对象中添加 `src`，并继续保留有意义的 `alt` 文案用于可访问性和内容说明。
+真实产品图片放在 `public/images/products/`。图片字段通过 `images` 数组维护。每张图片至少需要双语 `alt` 和 `gradient`；`gradient` 作为当前 MVP 的占位图背景。接入真实图片时，在图片对象中添加 `src`，例如 `/images/products/momo-cardigan-front.jpg`，并继续保留有意义的中英文 `alt` 文案用于可访问性和内容说明。
+
+网站支持 `/zh-CN` 和 `/en` 两个语言路径，默认语言是简体中文。
+
+更详细的维护说明见 `docs/content-management.md`。
 
 ## 部署流程
 

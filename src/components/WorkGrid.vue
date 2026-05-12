@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { Work } from '../types/work'
+import type { UiCopy } from '../i18n/locales'
 import WorkCard from './WorkCard.vue'
 
 defineProps<{
   works: Work[]
   getCategoryLabel: (categoryId: Work['category']) => string
+  copy: UiCopy
 }>()
 
 defineEmits<{
@@ -13,10 +15,10 @@ defineEmits<{
 </script>
 
 <template>
-  <section class="portfolio-section" aria-labelledby="portfolio-title">
+  <section id="works" class="portfolio-section" aria-labelledby="portfolio-title">
     <div class="section-heading">
-      <p class="eyebrow">Portfolio</p>
-      <h2 id="portfolio-title">精选作品与作品集</h2>
+      <p class="eyebrow">{{ copy.portfolioEyebrow }}</p>
+      <h2 id="portfolio-title">{{ copy.portfolioTitle }}</h2>
     </div>
 
     <div class="work-grid">
@@ -25,6 +27,7 @@ defineEmits<{
         :key="work.slug"
         :work="work"
         :category-label="getCategoryLabel(work.category)"
+        :featured-label="copy.featuredLabel"
         @open="$emit('open', $event)"
       />
     </div>

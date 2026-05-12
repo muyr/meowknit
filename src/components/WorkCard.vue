@@ -4,6 +4,7 @@ import type { Work } from '../types/work'
 defineProps<{
   work: Work
   categoryLabel: string
+  featuredLabel: string
 }>()
 
 defineEmits<{
@@ -35,7 +36,7 @@ defineEmits<{
       <span class="work-card-body">
         <span class="work-meta">
           <span>{{ categoryLabel }}</span>
-          <span v-if="work.featured">精选</span>
+          <span v-if="work.featured">{{ featuredLabel }}</span>
         </span>
         <strong>{{ work.name }}</strong>
         <span class="work-description">{{ work.description }}</span>
