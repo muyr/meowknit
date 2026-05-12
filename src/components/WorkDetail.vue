@@ -108,8 +108,17 @@ function selectImage(index: number) {
       </div>
     </div>
 
+    <video
+      v-if="work.videoSrc"
+      class="detail-video"
+      :src="work.videoSrc"
+      controls
+      playsinline
+      data-test="work-local-video"
+    />
+
     <iframe
-      v-if="work.youtubeVideoId"
+      v-else-if="work.youtubeVideoId"
       class="detail-video"
       :src="`https://www.youtube.com/embed/${work.youtubeVideoId}`"
       :title="`${work.name} video`"

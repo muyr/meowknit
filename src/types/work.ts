@@ -4,7 +4,7 @@ export type WorkCategoryId =
   | UsageCategoryId
   | CraftCategoryId
 
-export type UsageCategoryId = 'home' | 'jewelry' | 'pet-goods' | 'bags' | 'gifts'
+export type UsageCategoryId = 'home' | 'jewelry' | 'pet-goods' | 'bags' | 'gifts' | 'charms'
 
 export type CraftCategoryId = 'tatting' | 'crochet' | 'macrame' | 'knitting'
 
@@ -69,6 +69,7 @@ export interface RawWork {
   craftCategory: CraftCategoryId
   description: LocalizedText
   images: RawWorkImage[]
+  videoSrc?: string
   youtubeVideoId?: string
   variants?: RawWorkVariant[]
   featured: boolean
@@ -84,6 +85,7 @@ export interface Work {
   craftCategory: CraftCategory
   description: string
   images: WorkImage[]
+  videoSrc?: string
   youtubeVideoId?: string
   variants?: WorkVariant[]
   featured: boolean

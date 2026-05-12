@@ -56,4 +56,15 @@ export const usageCategories: RawUsageCategory[] = [
       en: 'Limited handmade pieces for collecting, birthdays, and celebrations.',
     },
   },
+  {
+    id: 'charms',
+    label: {
+      'zh-CN': '挂饰',
+      en: 'Charms',
+    },
+    description: {
+      'zh-CN': '钥匙扣、包挂和适合随身携带的小手作。',
+      en: 'Keychains, bag charms, and small handmade pieces to carry every day.',
+    },
+  },
 ]

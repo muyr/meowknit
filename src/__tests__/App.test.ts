@@ -205,6 +205,20 @@ describe('App', () => {
     expect(wrapper.find('[data-test="work-card-ginger-market-bag"]').exists()).toBe(false)
   })
 
+  it('renders local product media for the dumpling keychain detail page', () => {
+    window.history.pushState({}, '', '/zh-CN/works/crochet-dumpling-keychain')
+    const wrapper = mount(App)
+
+    expect(wrapper.text()).toContain('饺子钥匙扣')
+    expect(wrapper.findAll('[data-test="work-detail-thumbnail"]')).toHaveLength(3)
+    expect(wrapper.get('[data-test="work-detail-active-image"]').attributes('src')).toBe(
+      '/images/products/crochet-dumpling-keychain-1.jpg',
+    )
+    expect(wrapper.get('[data-test="work-local-video"]').attributes('src')).toBe(
+      '/images/products/crochet-dumpling-keychain-video.mp4',
+    )
+  })
+
   it('switches the detail image when a thumbnail or variant is selected', async () => {
     window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
     const wrapper = mount(App)

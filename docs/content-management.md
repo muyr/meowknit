@@ -41,6 +41,8 @@ public/
 - `craftCategory`：工艺分类 id，必须来自 `src/content/craftCategories.ts`。
 - `description`：简短产品介绍，需要同时维护 `zh-CN` 和 `en`。
 - `images`：产品图片列表。
+- `videoSrc`：本地视频路径，可选，从 `/images/products/` 开始。
+- `youtubeVideoId`：YouTube 视频 ID，可选，只填写 ID，不填写完整链接。
 - `featured`：是否标记为精选。
 - `etsyUrl`：如果产品有 Etsy 链接，填写这个字段。
 - `inquiryUrl`：如果希望访客咨询，填写这个字段。
@@ -64,6 +66,12 @@ images: [
 - `src`：真实图片路径，从 `/images/products/` 开始。
 - `alt`：图片说明，需要同时维护 `zh-CN` 和 `en`，帮助可访问性和搜索理解。
 - `gradient`：没有真实图片或图片加载前的占位背景，建议保留。
+
+本地视频可以放在同一目录，并在产品中填写：
+
+```ts
+videoSrc: '/images/products/crochet-dumpling-keychain-video.mp4'
+```
 
 ## 分类维护
 

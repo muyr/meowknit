@@ -86,6 +86,7 @@ function localizeProduct(
     craftCategory: requireCraftCategory(product.craftCategory, craftCategories),
     description: product.description[locale],
     images: product.images.map((image) => localizeImage(image, locale)),
+    videoSrc: product.videoSrc,
     youtubeVideoId: product.youtubeVideoId,
     variants: product.variants?.map((variant) => localizeVariant(variant, locale)),
     featured: product.featured,

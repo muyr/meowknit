@@ -17,6 +17,7 @@
 4. `usageCategory` 必须使用 `usageCategories.ts` 中已经存在的分类 id。
 5. `craftCategory` 必须使用 `craftCategories.ts` 中已经存在的分类 id。
 6. 图片路径写成 `/images/products/your-file.jpg`。
+7. 如果有本地视频，视频路径写成 `/images/products/your-file.mov` 或 `/images/products/your-file.mp4`，并填到 `videoSrc`。
 
 如果暂时没有真实图片，可以先只写 `gradient` 占位背景；有真实图片后再补 `src`。
 

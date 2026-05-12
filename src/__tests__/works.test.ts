@@ -32,6 +32,7 @@ describe('works data', () => {
       'pet-goods',
       'bags',
       'gifts',
+      'charms',
     ])
     expect(craftCategories.map((category) => category.id)).toEqual([
       'tatting',
@@ -90,6 +91,23 @@ describe('works data', () => {
         expect(Boolean(image.src?.trim() || image.gradient.trim())).toBe(true)
       }
     }
+  })
+
+  it('includes the crochet dumpling keychain as a featured charm', () => {
+    const dumplingKeychain = works.find((work) => work.slug === 'crochet-dumpling-keychain')
+
+    expect(dumplingKeychain).toBeDefined()
+    expect(dumplingKeychain?.name).toBe('饺子钥匙扣')
+    expect(dumplingKeychain?.usageCategory.id).toBe('charms')
+    expect(dumplingKeychain?.craftCategory.id).toBe('crochet')
+    expect(dumplingKeychain?.images.map((image) => image.src)).toEqual([
+      '/images/products/crochet-dumpling-keychain-1.jpg',
+      '/images/products/crochet-dumpling-keychain-2.jpg',
+      '/images/products/crochet-dumpling-keychain-3.jpg',
+    ])
+    expect(dumplingKeychain?.videoSrc).toBe('/images/products/crochet-dumpling-keychain-video.mp4')
+    expect(dumplingKeychain?.featured).toBe(true)
+    expect(dumplingKeychain?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
   })
 
   it('supports optional detail videos and variants that point to existing images', () => {

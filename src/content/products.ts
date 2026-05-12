@@ -4,6 +4,48 @@ const instagramUrl = 'https://www.instagram.com/meowknit'
 
 export const products: RawWork[] = [
   {
+    slug: 'crochet-dumpling-keychain',
+    name: {
+      'zh-CN': '饺子钥匙扣',
+      en: 'Dumpling Keychain',
+    },
+    usageCategory: 'charms',
+    craftCategory: 'crochet',
+    description: {
+      'zh-CN': '圆鼓鼓的钩针饺子钥匙扣，带一点软糯可爱的日常陪伴感，适合挂在钥匙、包袋或礼物包装上。',
+      en: 'A plump crochet dumpling keychain with a soft and playful everyday charm, made for keys, bags, or gift wrapping.',
+    },
+    images: [
+      {
+        src: '/images/products/crochet-dumpling-keychain-1.jpg',
+        alt: {
+          'zh-CN': '钩针饺子钥匙扣正面',
+          en: 'Front view of the crochet dumpling keychain',
+        },
+        gradient: 'linear-gradient(135deg, #f7ead9 0%, #fff8ef 46%, #c6a67c 100%)',
+      },
+      {
+        src: '/images/products/crochet-dumpling-keychain-2.jpg',
+        alt: {
+          'zh-CN': '钩针饺子钥匙扣细节',
+          en: 'Detail view of the crochet dumpling keychain',
+        },
+        gradient: 'linear-gradient(135deg, #f0dfc7 0%, #fff8ef 48%, #b89065 100%)',
+      },
+      {
+        src: '/images/products/crochet-dumpling-keychain-3.jpg',
+        alt: {
+          'zh-CN': '钩针饺子钥匙扣挂饰效果',
+          en: 'Crochet dumpling keychain as a hanging charm',
+        },
+        gradient: 'linear-gradient(135deg, #c6a67c 0%, #f7ead9 48%, #fff8ef 100%)',
+      },
+    ],
+    videoSrc: '/images/products/crochet-dumpling-keychain-video.mp4',
+    featured: true,
+    etsyUrl: 'https://www.etsy.com/shop/meowknit',
+  },
+  {
     slug: 'momo-cardigan',
     name: {
       'zh-CN': 'Momo 奶油短开衫',
