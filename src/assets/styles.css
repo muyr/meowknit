@@ -365,7 +365,8 @@ h2 {
   display: block;
   width: 100%;
   min-height: 220px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f7ead9;
 }
 
 img.work-card-image {
@@ -442,7 +443,8 @@ img.work-card-image {
   width: 100%;
   min-height: 320px;
   border-radius: 26px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f7ead9;
 }
 
 img.detail-image {
@@ -450,12 +452,15 @@ img.detail-image {
 }
 
 .detail-thumbnails {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.65rem;
 }
 
 .detail-thumbnail {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
   overflow: hidden;
   border: 2px solid transparent;
   border-radius: 18px;
@@ -473,7 +478,8 @@ img.detail-image {
   display: block;
   width: 100%;
   height: 76px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f7ead9;
 }
 
 .detail-video {
