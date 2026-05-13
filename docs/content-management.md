@@ -42,6 +42,7 @@ public/
 - `description`：简短产品介绍，需要同时维护 `zh-CN` 和 `en`。
 - `images`：产品图片列表。
 - `videoSrc`：本地视频路径，可选，从 `/images/products/` 开始。
+- `videoSrcs`：多个本地视频路径，可选，从 `/images/products/` 开始。
 - `youtubeVideoId`：YouTube 视频 ID，可选，只填写 ID，不填写完整链接。
 - `featured`：是否标记为精选。
 - `etsyUrl`：如果产品有 Etsy 链接，填写这个字段。
@@ -73,12 +74,21 @@ images: [
 videoSrc: '/images/products/crochet-dumpling-keychain-video.mp4'
 ```
 
+如果同一作品有多个本地视频，使用：
+
+```ts
+videoSrcs: [
+  '/images/products/crochet-shaun-sheep-figurine-video-1.mp4',
+  '/images/products/crochet-shaun-sheep-figurine-video-2.mp4',
+]
+```
+
 ## 分类维护
 
 分类分成两个文件维护：
 
 - `src/content/usageCategories.ts`：用途分类，例如家居、首饰、宠物用品、包袋、礼物。
-- `src/content/craftCategories.ts`：工艺分类，例如梭编、钩针、绳编、针织。
+- `src/content/craftCategories.ts`：工艺分类，例如梭编、钩针、绳编、针织、缠花。
 
 分类的 `label` 和 `description` 也需要同时维护 `zh-CN` 和 `en`。
 

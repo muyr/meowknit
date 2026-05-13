@@ -39,6 +39,7 @@ describe('works data', () => {
       'crochet',
       'macrame',
       'knitting',
+      'silk-wrapped',
     ])
   })
 
@@ -108,6 +109,96 @@ describe('works data', () => {
     expect(dumplingKeychain?.videoSrc).toBe('/images/products/crochet-dumpling-keychain-video.mp4')
     expect(dumplingKeychain?.featured).toBe(true)
     expect(dumplingKeychain?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+  })
+
+  it('includes the crochet pet snood as a featured pet good', () => {
+    const petSnood = works.find((work) => work.slug === 'crochet-pet-snood')
+
+    expect(petSnood).toBeDefined()
+    expect(petSnood?.name).toBe('宠物围脖')
+    expect(petSnood?.usageCategory.id).toBe('pet-goods')
+    expect(petSnood?.craftCategory.id).toBe('crochet')
+    expect(petSnood?.images.map((image) => image.src)).toEqual([
+      '/images/products/crochet-pet-snood-1.jpg',
+      '/images/products/crochet-pet-snood-2.jpg',
+      '/images/products/crochet-pet-snood-3.jpg',
+      '/images/products/crochet-pet-snood-4.jpg',
+    ])
+    expect(petSnood?.featured).toBe(true)
+    expect(petSnood?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+  })
+
+  it('includes the crochet Shaun sheep figurine with multiple local videos', () => {
+    const shaunSheep = works.find((work) => work.slug === 'crochet-shaun-sheep-figurine')
+
+    expect(shaunSheep).toBeDefined()
+    expect(shaunSheep?.name).toBe('小羊肖恩摆件')
+    expect(shaunSheep?.usageCategory.id).toBe('home')
+    expect(shaunSheep?.craftCategory.id).toBe('crochet')
+    expect(shaunSheep?.images.map((image) => image.src)).toEqual([
+      '/images/products/crochet-shaun-sheep-figurine-1.jpg',
+      '/images/products/crochet-shaun-sheep-figurine-2.jpg',
+    ])
+    expect(shaunSheep?.videoSrcs).toEqual([
+      '/images/products/crochet-shaun-sheep-figurine-video-1.mp4',
+      '/images/products/crochet-shaun-sheep-figurine-video-2.mp4',
+    ])
+    expect(shaunSheep?.featured).toBe(true)
+    expect(shaunSheep?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+  })
+
+  it('includes the crochet Oreo keychain as a featured charm with local video', () => {
+    const oreoKeychain = works.find((work) => work.slug === 'crochet-oreo-keychain')
+
+    expect(oreoKeychain).toBeDefined()
+    expect(oreoKeychain?.name).toBe('奥利奥钥匙链')
+    expect(oreoKeychain?.usageCategory.id).toBe('charms')
+    expect(oreoKeychain?.craftCategory.id).toBe('crochet')
+    expect(oreoKeychain?.images.map((image) => image.src)).toEqual([
+      '/images/products/crochet-oreo-keychain-1.jpg',
+      '/images/products/crochet-oreo-keychain-2.jpg',
+      '/images/products/crochet-oreo-keychain-3.jpg',
+    ])
+    expect(oreoKeychain?.videoSrc).toBe('/images/products/crochet-oreo-keychain-video.mp4')
+    expect(oreoKeychain?.featured).toBe(true)
+    expect(oreoKeychain?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+  })
+
+  it('includes the Chinese style hairpin as a featured silk-wrapped jewelry piece', () => {
+    const chineseHairpin = works.find((work) => work.slug === 'silk-wrapped-chinese-hairpin')
+
+    expect(chineseHairpin).toBeDefined()
+    expect(chineseHairpin?.name).toBe('中国风发簪')
+    expect(chineseHairpin?.usageCategory.id).toBe('jewelry')
+    expect(chineseHairpin?.craftCategory.id).toBe('silk-wrapped')
+    expect(chineseHairpin?.images.map((image) => image.src)).toEqual([
+      '/images/products/silk-wrapped-chinese-hairpin-1.jpg',
+      '/images/products/silk-wrapped-chinese-hairpin-2.jpg',
+    ])
+    expect(chineseHairpin?.featured).toBe(true)
+    expect(chineseHairpin?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+  })
+
+  it('includes the crochet figurine series as featured home pieces', () => {
+    const expectedFigurines = [
+      ['crochet-mushroom-figurine', '蘑菇钩针摆件', '/images/products/crochet-mushroom-figurine.jpg'],
+      ['crochet-baba-mandarin-figurine', '耙耙柑钩针摆件', '/images/products/crochet-baba-mandarin-figurine.jpg'],
+      ['crochet-carrot-figurine', '萝卜钩针摆件', '/images/products/crochet-carrot-figurine.jpg'],
+      ['crochet-scallion-figurine', '大葱钩针摆件', '/images/products/crochet-scallion-figurine.jpg'],
+      ['crochet-garlic-figurine', '大蒜钩针摆件', '/images/products/crochet-garlic-figurine.jpg'],
+    ] as const
+
+    for (const [slug, name, imageSrc] of expectedFigurines) {
+      const figurine = works.find((work) => work.slug === slug)
+
+      expect(figurine).toBeDefined()
+      expect(figurine?.name).toBe(name)
+      expect(figurine?.usageCategory.id).toBe('home')
+      expect(figurine?.craftCategory.id).toBe('crochet')
+      expect(figurine?.images.map((image) => image.src)).toEqual([imageSrc])
+      expect(figurine?.featured).toBe(true)
+      expect(figurine?.etsyUrl).toBe('https://www.etsy.com/shop/meowknit')
+    }
   })
 
   it('supports optional detail videos and variants that point to existing images', () => {

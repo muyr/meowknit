@@ -45,4 +45,15 @@ export const craftCategories: RawCraftCategory[] = [
       en: 'Soft knitted pieces for everyday layering.',
     },
   },
+  {
+    id: 'silk-wrapped',
+    label: {
+      'zh-CN': '缠花',
+      en: 'Silk Wrapped',
+    },
+    description: {
+      'zh-CN': '以丝线缠绕塑形，呈现轻盈花叶与中式配饰细节。',
+      en: 'Silk-wrapped forms shaped into airy petals, leaves, and Chinese-style accessory details.',
+    },
+  },
 ]

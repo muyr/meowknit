@@ -87,6 +87,7 @@ function localizeProduct(
     description: product.description[locale],
     images: product.images.map((image) => localizeImage(image, locale)),
     videoSrc: product.videoSrc,
+    videoSrcs: product.videoSrcs,
     youtubeVideoId: product.youtubeVideoId,
     variants: product.variants?.map((variant) => localizeVariant(variant, locale)),
     featured: product.featured,

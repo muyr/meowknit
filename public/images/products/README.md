@@ -31,3 +31,12 @@ images: [
 ```ts
 videoSrc: '/images/products/crochet-dumpling-keychain-video.mp4'
 ```
+
+多个视频使用 `videoSrcs`：
+
+```ts
+videoSrcs: [
+  '/images/products/crochet-shaun-sheep-figurine-video-1.mp4',
+  '/images/products/crochet-shaun-sheep-figurine-video-2.mp4',
+]
+```

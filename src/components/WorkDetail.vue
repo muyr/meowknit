@@ -17,6 +17,13 @@ defineEmits<{
 
 const activeImageIndex = ref(0)
 const activeImage = computed(() => props.work.images[activeImageIndex.value] ?? props.work.images[0])
+const localVideoSrcs = computed(() => {
+  if (props.work.videoSrcs?.length) {
+    return props.work.videoSrcs
+  }
+
+  return props.work.videoSrc ? [props.work.videoSrc] : []
+})
 const activeVariantId = computed(() => {
   return props.work.variants?.find((variant) => variant.imageIndex === activeImageIndex.value)?.id
 })
@@ -109,16 +116,17 @@ function selectImage(index: number) {
     </div>
 
     <video
-      v-if="work.videoSrc"
+      v-for="videoSrc in localVideoSrcs"
+      :key="videoSrc"
       class="detail-video"
-      :src="work.videoSrc"
+      :src="videoSrc"
       controls
       playsinline
       data-test="work-local-video"
     />
 
     <iframe
-      v-else-if="work.youtubeVideoId"
+      v-if="!localVideoSrcs.length && work.youtubeVideoId"
       class="detail-video"
       :src="`https://www.youtube.com/embed/${work.youtubeVideoId}`"
       :title="`${work.name} video`"

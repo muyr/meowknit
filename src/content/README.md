@@ -6,7 +6,7 @@
 
 - `products.ts`：维护产品双语名称、双语描述、图片、精选状态和 Etsy/咨询链接。
 - `usageCategories.ts`：维护用途分类的双语名称和说明，例如家居、首饰、宠物用品。
-- `craftCategories.ts`：维护工艺分类的双语名称和说明，例如梭编、钩针、绳编。
+- `craftCategories.ts`：维护工艺分类的双语名称和说明，例如梭编、钩针、绳编、缠花。
 - `catalog.ts`：把产品和两类分类组合成网站可用的数据，并生成 CTA。
 
 ## 添加一个产品
@@ -17,7 +17,7 @@
 4. `usageCategory` 必须使用 `usageCategories.ts` 中已经存在的分类 id。
 5. `craftCategory` 必须使用 `craftCategories.ts` 中已经存在的分类 id。
 6. 图片路径写成 `/images/products/your-file.jpg`。
-7. 如果有本地视频，视频路径写成 `/images/products/your-file.mov` 或 `/images/products/your-file.mp4`，并填到 `videoSrc`。
+7. 如果有本地视频，视频路径写成 `/images/products/your-file.mp4`，单个视频填到 `videoSrc`，多个视频填到 `videoSrcs`。
 
 如果暂时没有真实图片，可以先只写 `gradient` 占位背景；有真实图片后再补 `src`。
 

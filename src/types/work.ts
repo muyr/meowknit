@@ -6,7 +6,7 @@ export type WorkCategoryId =
 
 export type UsageCategoryId = 'home' | 'jewelry' | 'pet-goods' | 'bags' | 'gifts' | 'charms'
 
-export type CraftCategoryId = 'tatting' | 'crochet' | 'macrame' | 'knitting'
+export type CraftCategoryId = 'tatting' | 'crochet' | 'macrame' | 'knitting' | 'silk-wrapped'
 
 export type LocalizedText = Record<Locale, string>
 
@@ -70,6 +70,7 @@ export interface RawWork {
   description: LocalizedText
   images: RawWorkImage[]
   videoSrc?: string
+  videoSrcs?: string[]
   youtubeVideoId?: string
   variants?: RawWorkVariant[]
   featured: boolean
@@ -86,6 +87,7 @@ export interface Work {
   description: string
   images: WorkImage[]
   videoSrc?: string
+  videoSrcs?: string[]
   youtubeVideoId?: string
   variants?: WorkVariant[]
   featured: boolean

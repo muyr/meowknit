@@ -24,8 +24,8 @@ Before editing, make sure the product request has enough information:
 
 - Whether this is a new product or an update to an existing `slug`.
 - Chinese product name and Chinese description.
-- `usageCategory`: one of `home`, `jewelry`, `pet-goods`, `bags`, `gifts`.
-- `craftCategory`: one of `tatting`, `crochet`, `macrame`, `knitting`.
+- `usageCategory`: one of `home`, `jewelry`, `pet-goods`, `bags`, `gifts`, `charms`.
+- `craftCategory`: one of `tatting`, `crochet`, `macrame`, `knitting`, `silk-wrapped`.
 - At least one image entry with either `src` or `gradient`, plus Chinese `alt`.
 - Whether the work is `featured`.
 - CTA target: `etsyUrl`, `inquiryUrl`, or `socialUrl`.
@@ -33,7 +33,8 @@ Before editing, make sure the product request has enough information:
 Optional fields:
 
 - `youtubeVideoId`: YouTube video ID only, not a full URL.
-- `videoSrc`: local video path from `/images/products/`, preferably `.mp4`, such as `/images/products/example-video.mp4`.
+- `videoSrc`: single local video path from `/images/products/`, preferably `.mp4`, such as `/images/products/example-video.mp4`.
+- `videoSrcs`: multiple local video paths from `/images/products/`, preferably `.mp4`.
 - `variants`: color/style options with Chinese labels and target `imageIndex`.
 - Additional images, real media filenames, or placeholder gradient preferences.
 
@@ -62,7 +63,7 @@ If required information is missing, ask concise clarifying questions before edit
 7. For local videos:
    - Copy videos into `public/images/products/`.
    - Use stable kebab-case names like `crochet-dumpling-keychain-video.mp4`.
-   - Reference them with `videoSrc`.
+   - Reference one video with `videoSrc`; reference multiple videos with `videoSrcs`.
 8. For variants:
    - Use stable lowercase ids like `cream`, `peach`, `navy`.
    - Ensure every `imageIndex` is within the `images` array.

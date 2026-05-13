@@ -219,6 +219,18 @@ describe('App', () => {
     )
   })
 
+  it('renders multiple local videos for the Shaun sheep figurine detail page', () => {
+    window.history.pushState({}, '', '/zh-CN/works/crochet-shaun-sheep-figurine')
+    const wrapper = mount(App)
+
+    expect(wrapper.text()).toContain('小羊肖恩摆件')
+    expect(wrapper.findAll('[data-test="work-detail-thumbnail"]')).toHaveLength(2)
+    expect(wrapper.findAll('[data-test="work-local-video"]').map((video) => video.attributes('src'))).toEqual([
+      '/images/products/crochet-shaun-sheep-figurine-video-1.mp4',
+      '/images/products/crochet-shaun-sheep-figurine-video-2.mp4',
+    ])
+  })
+
   it('switches the detail image when a thumbnail or variant is selected', async () => {
     window.history.pushState({}, '', '/zh-CN/works/momo-cardigan')
     const wrapper = mount(App)
